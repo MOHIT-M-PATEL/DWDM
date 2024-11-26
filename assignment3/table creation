@@ -1,0 +1,39 @@
+CREATE TABLE AuthorDim (
+    author_id INT PRIMARY KEY,
+    author_name VARCHAR(100),
+    author_age INT,
+    author_country VARCHAR(100)
+);
+
+CREATE TABLE BookTypeDim (
+    book_type_id INT PRIMARY KEY,
+    book_type_name VARCHAR(100)
+);
+
+CREATE TABLE LocationDim (
+    location_id INT PRIMARY KEY,
+    location_name VARCHAR(100)
+);
+
+CREATE TABLE PublicationDim (
+    publication_id INT PRIMARY KEY,
+    publication_name VARCHAR(100),
+    publication_country VARCHAR(100),
+    publication_year INT
+);
+
+CREATE TABLE BooksFact (
+    book_id INT PRIMARY KEY,
+    book_type_id INT,
+    location_id INT,
+    author_id INT,
+    publication_id INT,
+    cost DECIMAL(10, 2),
+    quantity INT,
+    profit DECIMAL(10, 2),
+    FOREIGN KEY (book_type_id) REFERENCES BookTypeDim(book_type_id),
+    FOREIGN KEY (location_id) REFERENCES LocationDim(location_id),
+    FOREIGN KEY (author_id) REFERENCES AuthorDim(author_id),
+    FOREIGN KEY (publication_id) REFERENCES PublicationDim(publication_id)
+);
+
