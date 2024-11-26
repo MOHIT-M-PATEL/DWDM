@@ -1,0 +1,107 @@
+-- Dimension Table: DimPatient
+CREATE TABLE DimPatient (
+    PatientID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    DateOfBirth DATE,
+    Gender CHAR(1),
+    ContactInformation VARCHAR(255),
+    InsuranceDetails VARCHAR(255)
+);
+
+-- Dimension Table: DimProvider
+CREATE TABLE DimProvider (
+    ProviderID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Specialty VARCHAR(255),
+    ContactInformation VARCHAR(255)
+);
+
+-- Dimension Table: DimFacility
+CREATE TABLE DimFacility (
+    FacilityID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Location VARCHAR(255),
+    Department VARCHAR(255)
+);
+
+-- Dimension Table: DimDiagnosis
+CREATE TABLE DimDiagnosis (
+    DiagnosisID INT PRIMARY KEY,
+    DiagnosisName VARCHAR(255),
+    Description TEXT
+);
+
+-- Dimension Table: DimService
+CREATE TABLE DimService (
+    ServiceID INT PRIMARY KEY,
+    ServiceName VARCHAR(255),
+    Description TEXT
+);
+
+-- Dimension Table: DimMedication
+CREATE TABLE DimMedication (
+    MedicationID INT PRIMARY KEY,
+    MedicationName VARCHAR(255),
+    Description TEXT
+);
+
+-- Dimension Table: DimTreatment
+CREATE TABLE DimTreatment (
+    TreatmentID INT PRIMARY KEY,
+    TreatmentName VARCHAR(255),
+    Description TEXT
+);
+
+-- Dimension Table: DimTest
+CREATE TABLE DimTest (
+    TestID INT PRIMARY KEY,
+    TestName VARCHAR(255),
+    Description TEXT
+);
+
+-- Dimension Table: DimInsuranceProvider
+CREATE TABLE DimInsuranceProvider (
+    InsuranceProviderID INT PRIMARY KEY,
+    ProviderName VARCHAR(255),
+    ContactInformation VARCHAR(255)
+);
+
+-- Fact Table: FactAppointments
+CREATE TABLE FactAppointments (
+    AppointmentID INT PRIMARY KEY,
+    PatientID INT,
+    ProviderID INT,
+    FacilityID INT,
+    DiagnosisID INT,
+    MedicationID INT,
+    TreatmentID INT,
+    TestID INT,
+    AppointmentDate DATE,
+    AppointmentType VARCHAR(255),
+    Duration INT, -- Duration in minutes
+
+    FOREIGN KEY (PatientID) REFERENCES DimPatient(PatientID),
+    FOREIGN KEY (ProviderID) REFERENCES DimProvider(ProviderID),
+    FOREIGN KEY (FacilityID) REFERENCES DimFacility(FacilityID),
+    FOREIGN KEY (DiagnosisID) REFERENCES DimDiagnosis(DiagnosisID),
+    FOREIGN KEY (MedicationID) REFERENCES DimMedication(MedicationID),
+    FOREIGN KEY (TreatmentID) REFERENCES DimTreatment(TreatmentID),
+    FOREIGN KEY (TestID) REFERENCES DimTest(TestID)
+);
+
+-- Fact Table: FactBilling
+CREATE TABLE FactBilling (
+    InvoiceID INT PRIMARY KEY,
+    PatientID INT,
+    ProviderID INT,
+    ServiceID INT,
+    InsuranceProviderID INT,
+    AmountCharged DECIMAL(10, 2),
+    AmountPaid DECIMAL(10, 2),
+    PaymentStatus VARCHAR(50),
+
+    FOREIGN KEY (PatientID) REFERENCES DimPatient(PatientID),
+    FOREIGN KEY (ProviderID) REFERENCES DimProvider(ProviderID),
+    FOREIGN KEY (ServiceID) REFERENCES DimService(ServiceID),
+    FOREIGN KEY (InsuranceProviderID) REFERENCES DimInsuranceProvider(InsuranceProviderID)
+);
