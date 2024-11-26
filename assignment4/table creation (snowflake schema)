@@ -1,0 +1,116 @@
+CREATE TABLE Customer_Dimension (
+    Customer_ID INT PRIMARY KEY,
+    Customer_Name VARCHAR(100),
+    Gender VARCHAR(10),
+    Date_of_Birth DATE,
+    Occupation_ID INT,
+    Income_Level_ID INT,
+    Location_ID INT,
+    FOREIGN KEY (Occupation_ID) REFERENCES Occupation_Dimension(Occupation_ID),
+    FOREIGN KEY (Income_Level_ID) REFERENCES Income_Level_Dimension(Income_Level_ID),
+    FOREIGN KEY (Location_ID) REFERENCES Location_Dimension(Location_ID)
+);
+
+CREATE TABLE Occupation_Dimension (
+    Occupation_ID INT PRIMARY KEY,
+    Occupation VARCHAR(50)
+);
+
+CREATE TABLE Income_Level_Dimension (
+    Income_Level_ID INT PRIMARY KEY,
+    Income_Level VARCHAR(50)
+);
+
+CREATE TABLE Location_Dimension (
+    Location_ID INT PRIMARY KEY,
+    Address VARCHAR(255),
+    City VARCHAR(100),
+    State VARCHAR(100),
+    Country VARCHAR(100)
+);
+
+CREATE TABLE Account_Dimension (
+    Account_ID INT PRIMARY KEY,
+    Account_Type_ID INT,
+    Account_Status_ID INT,
+    Opening_Date DATE,
+    Interest_Rate_ID INT,
+    Balance DECIMAL(15, 2),
+    FOREIGN KEY (Account_Type_ID) REFERENCES Account_Type_Dimension(Account_Type_ID),
+    FOREIGN KEY (Account_Status_ID) REFERENCES Account_Status_Dimension(Account_Status_ID),
+    FOREIGN KEY (Interest_Rate_ID) REFERENCES Interest_Rate_Dimension(Interest_Rate_ID)
+);
+
+CREATE TABLE Account_Type_Dimension (
+    Account_Type_ID INT PRIMARY KEY,
+    Account_Type VARCHAR(50)
+);
+
+CREATE TABLE Account_Status_Dimension (
+    Account_Status_ID INT PRIMARY KEY,
+    Account_Status VARCHAR(20)
+);
+
+CREATE TABLE Interest_Rate_Dimension (
+    Interest_Rate_ID INT PRIMARY KEY,
+    Interest_Rate DECIMAL(5, 2)
+);
+
+CREATE TABLE Date_Dimension (
+    Date_ID INT PRIMARY KEY,
+    Day_ID INT,
+    Month_ID INT,
+    Quarter_ID INT,
+    Year_ID INT,
+    FOREIGN KEY (Day_ID) REFERENCES Day_Dimension(Day_ID),
+    FOREIGN KEY (Month_ID) REFERENCES Month_Dimension(Month_ID),
+    FOREIGN KEY (Quarter_ID) REFERENCES Quarter_Dimension(Quarter_ID),
+    FOREIGN KEY (Year_ID) REFERENCES Year_Dimension(Year_ID)
+);
+
+CREATE TABLE Day_Dimension (
+    Day_ID INT PRIMARY KEY,
+    Day INT,
+    Day_of_Week VARCHAR(15)
+);
+
+CREATE TABLE Month_Dimension (
+    Month_ID INT PRIMARY KEY,
+    Month INT
+);
+
+CREATE TABLE Quarter_Dimension (
+    Quarter_ID INT PRIMARY KEY,
+    Quarter INT
+);
+
+CREATE TABLE Year_Dimension (
+    Year_ID INT PRIMARY KEY,
+    Year INT
+);
+
+CREATE TABLE Transaction_Type_Dimension (
+    Transaction_Type_ID INT PRIMARY KEY,
+    Transaction_Type VARCHAR(50)
+);
+
+CREATE TABLE Branch_Dimension (
+    Branch_ID INT PRIMARY KEY,
+    Branch_Name VARCHAR(100),
+    Branch_Location VARCHAR(100)
+);
+
+CREATE TABLE Transaction_Fact (
+    Transaction_ID INT PRIMARY KEY,
+    Account_ID INT,
+    Customer_ID INT,
+    Transaction_Type_ID INT,
+    Date_ID INT,
+    Amount DECIMAL(15, 2),
+    Branch_ID INT,
+    FOREIGN KEY (Account_ID) REFERENCES Account_Dimension(Account_ID),
+    FOREIGN KEY (Customer_ID) REFERENCES Customer_Dimension(Customer_ID),
+    FOREIGN KEY (Transaction_Type_ID) REFERENCES Transaction_Type_Dimension(Transaction_Type_ID),
+    FOREIGN KEY (Date_ID) REFERENCES Date_Dimension(Date_ID),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch_Dimension(Branch_ID)
+);
