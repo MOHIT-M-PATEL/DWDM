@@ -1,0 +1,92 @@
+CREATE TABLE pharmacy_detail_dimension (
+    Pharmacy_ID INT PRIMARY KEY,
+    Drug_Name VARCHAR(100),
+    Cost DECIMAL(4, 2),
+    Expiry_DATE DATE
+);
+
+CREATE TABLE department_dimension (
+    Department_ID INT PRIMARY KEY,
+    Department_Name VARCHAR(100),
+    Location VARCHAR(100)
+);
+
+CREATE TABLE doctor_dimension (
+    Doctor_ID INT PRIMARY KEY,
+    Doctor_Name VARCHAR(100),
+    Specialization_ID INT,
+    Gender VARCHAR(10),
+    Phone_Number VARCHAR(15),
+    Email VARCHAR(100),
+    Department_ID INT,
+    Hire_Date DATE,
+    FOREIGN KEY (Specialization_ID) REFERENCES specialization_dimension(Specialization_ID),
+    FOREIGN KEY (Department_ID) REFERENCES department_dimension(Department_ID)
+);
+
+CREATE TABLE specialization_dimension (
+    Specialization_ID INT PRIMARY KEY,
+    Specialization_Name VARCHAR(100)
+);
+
+CREATE TABLE procedure_dimension (
+    Procedure_ID INT PRIMARY KEY,
+    Procedure_Name VARCHAR(100),
+    Procedure_Type_ID INT,
+    FOREIGN KEY (Procedure_Type_ID) REFERENCES procedure_type_dimension(Procedure_Type_ID)
+);
+
+CREATE TABLE procedure_type_dimension (
+    Procedure_Type_ID INT PRIMARY KEY,
+    Procedure_Type_Name VARCHAR(50)
+);
+
+CREATE TABLE patient_dimension (
+    Patient_ID INT PRIMARY KEY,
+    Patient_Name VARCHAR(100),
+    Gender VARCHAR(10),
+    Date_of_Birth DATE,
+    Address VARCHAR(255),
+    Phone_Number VARCHAR(15),
+    Email VARCHAR(100),
+    Blood_Type VARCHAR(5),
+    Insurance_ID INT,
+    FOREIGN KEY (Insurance_ID) REFERENCES insurance_dimension(Insurance_ID)
+);
+
+CREATE TABLE date_dimension (
+    Date_ID INT PRIMARY KEY,
+    Full_Date DATE,
+    Day INT,
+    Month INT,
+    Year INT,
+    Quarter INT,
+    Day_of_Week VARCHAR(15)
+);
+
+CREATE TABLE insurance_dimension (
+    Insurance_ID INT PRIMARY KEY,
+    Insurance_Provider VARCHAR(100),
+    Policy_Number VARCHAR(50),
+    Coverage_Type VARCHAR(50),
+    Coverage_Amount DECIMAL(15, 2)
+);
+
+CREATE TABLE patient_visit_fact (
+    Visit_ID INT PRIMARY KEY,
+    Patient_ID INT,
+    Doctor_ID INT,
+    Date_ID INT,
+    Procedure_ID INT,
+    Department_ID INT,
+    Pharmacy_ID INT,
+    Visit_Duration INT,
+    Cost DECIMAL(15, 2),
+    Insurance_Claimed DECIMAL(15, 2),
+    FOREIGN KEY (Patient_ID) REFERENCES patient_dimension(Patient_ID),
+    FOREIGN KEY (Doctor_ID) REFERENCES doctor_dimension(Doctor_ID),
+    FOREIGN KEY (Date_ID) REFERENCES date_dimension(Date_ID),
+    FOREIGN KEY (Procedure_ID) REFERENCES procedure_dimension(Procedure_ID),
+    FOREIGN KEY (Department_ID) REFERENCES department_dimension(Department_ID),
+    FOREIGN KEY (Pharmacy_ID) REFERENCES pharmacy_detail_dimension(Pharmacy_ID)
+);
