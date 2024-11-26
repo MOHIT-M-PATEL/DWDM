@@ -1,0 +1,32 @@
+Query (Star Schema):
+This query retrieves details of patient visits, such as patient name, doctor name, procedure performed, department, pharmacy, drug dispensed, visit date, duration, cost, and insurance claimed.
+SELECT 
+    pv.Visit_ID,
+    pd.Patient_Name,
+    dd.Doctor_Name,
+    proc.Procedure_Name,
+    dept.Department_Name,
+    pharm.Pharmacy_Name,
+    pharm.Drug_Name,
+    d.Full_Date,
+    pv.Visit_Duration,
+    pv.Cost,
+    pv.Insurance_Claimed
+FROM 
+    patient_visit_fact pv
+JOIN 
+    patient_dimension pd ON pv.Patient_ID = pd.Patient_ID
+JOIN 
+    doctor_dimension dd ON pv.Doctor_ID = dd.Doctor_ID
+JOIN 
+    procedure_dimension proc ON pv.Procedure_ID = proc.Procedure_ID
+JOIN 
+    department_dimension dept ON pv.Department_ID = dept.Department_ID
+JOIN 
+    pharmacy_dimension pharm ON pv.Pharmacy_ID = pharm.Pharmacy_ID
+JOIN 
+    date_dimension d ON pv.Date_ID = d.Date_ID
+WHERE 
+    d.Full_Date BETWEEN '2023-09-01' AND '2023-09-05'
+ORDER BY 
+    pv.Visit_ID;
