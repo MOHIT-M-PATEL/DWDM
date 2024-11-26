@@ -1,0 +1,57 @@
+CREATE TABLE Date_Dimension (
+    Date_ID INT PRIMARY KEY,
+    Full_Date DATE,
+    Day INT,
+    Month INT,
+    Quarter INT,
+    Year INT,
+    Day_of_Week VARCHAR(15)
+);
+
+CREATE TABLE Customer_Dimension (
+    Customer_ID INT PRIMARY KEY,
+    Customer_Name VARCHAR(100),
+    Gender VARCHAR(10),
+    Date_of_Birth DATE,
+    Address VARCHAR(255),
+    Phone_Number VARCHAR(15),
+    Email VARCHAR(100),
+    Occupation VARCHAR(50),
+    Income_Level VARCHAR(50)
+);
+
+CREATE TABLE Transaction_Type_Dimension (
+    Transaction_Type_ID INT PRIMARY KEY,
+    Transaction_Type VARCHAR(50)
+);
+
+CREATE TABLE Branch_Dimension (
+    Branch_ID INT PRIMARY KEY,
+    Branch_Name VARCHAR(100),
+    Branch_Location VARCHAR(100)
+);
+
+CREATE TABLE Account_Dimension (
+    Account_ID INT PRIMARY KEY,
+    Account_Type VARCHAR(50),
+    Account_Status VARCHAR(20),
+    Opening_Date DATE,
+    Interest_Rate DECIMAL(5, 2),
+    Balance DECIMAL(15, 2)
+);
+
+
+CREATE TABLE Transaction_Fact (
+    Transaction_ID INT PRIMARY KEY,
+    Account_ID INT,
+    Customer_ID INT,
+    Transaction_Type_ID INT,
+    Date_ID INT,
+    Amount DECIMAL(15, 2),
+    Branch_ID INT,
+    FOREIGN KEY (Account_ID) REFERENCES Account_Dimension(Account_ID),
+    FOREIGN KEY (Customer_ID) REFERENCES Customer_Dimension(Customer_ID),
+    FOREIGN KEY (Transaction_Type_ID) REFERENCES Transaction_Type_Dimension(Transaction_Type_ID),
+    FOREIGN KEY (Date_ID) REFERENCES Date_Dimension(Date_ID),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch_Dimension(Branch_ID)
+);
