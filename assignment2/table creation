@@ -1,0 +1,67 @@
+CREATE TABLE customerdim (
+  customer_id int NOT NULL,
+  customer_name varchar(100) DEFAULT NULL,
+  billing_address varchar(255) DEFAULT NULL,
+  shipping_address varchar(255) DEFAULT NULL,
+  currency varchar(10) DEFAULT NULL,
+  PRIMARY KEY (customer_id)
+)
+
+CREATE TABLE datedim (
+  date_id int NOT NULL,
+  date date DEFAULT NULL,
+  year int DEFAULT NULL,
+  month int DEFAULT NULL,
+  day int DEFAULT NULL,
+  quarter int DEFAULT NULL,
+  PRIMARY KEY (date_id)
+)
+
+CREATE TABLE ordersfact (
+  order_id int NOT NULL,
+  date_id int DEFAULT NULL,
+  customer_id int DEFAULT NULL,
+  product_id int DEFAULT NULL,
+  promotion_id int DEFAULT NULL,
+  sales_rep_id int DEFAULT NULL,
+  requested_ship_date_id int DEFAULT NULL,
+  quantity int DEFAULT NULL,
+  gross_amount decimal(10,2) DEFAULT NULL,
+  discount_amount decimal(10,2) DEFAULT NULL,
+  net_amount decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (order_id),
+  KEY date_id (date_id),
+  KEY customer_id (customer_id),
+  KEY product_id (product_id),
+  KEY promotion_id (promotion_id),
+  KEY sales_rep_id (sales_rep_id),
+  KEY requested_ship_date_id (requested_ship_date_id),
+  FOREIGN KEY (date_id) REFERENCES datedim (date_id),
+  FOREIGN KEY (customer_id) REFERENCES customerdim (customer_id),
+  FOREIGN KEY (product_id) REFERENCES productdim (product_id),
+  FOREIGN KEY (promotion_id) REFERENCES promotiondim (promotion_id),
+  FOREIGN KEY (sales_rep_id) REFERENCES salesrepdim (sales_rep_id),
+  FOREIGN KEY (requested_ship_date_id) REFERENCES datedim (date_id)
+)
+
+CREATE TABLE productdim (
+  product_id int NOT NULL,
+  product_name varchar(100) DEFAULT NULL,
+  category varchar(50) DEFAULT NULL,
+  price decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (product_id)
+)
+
+ CREATE TABLE `promotiondim` (
+  `promotion_id` int NOT NULL,
+  `promotion_name` varchar(100) DEFAULT NULL,
+  `discount_percentage` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`promotion_id`)
+) 
+
+CREATE TABLE `salesrepdim` (
+  `sales_rep_id` int NOT NULL,
+  `sales_rep_name` varchar(100) DEFAULT NULL,
+  `region` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`sales_rep_id`)
+) 
