@@ -1,0 +1,42 @@
+Return Quantity and Profit per Location:
+
+SELECT 
+    l.location_name,
+    SUM(f.quantity) AS total_quantity,
+    SUM(f.profit) AS total_profit
+FROM 
+    BooksFact f
+JOIN 
+    LocationDim l ON f.location_id = l.location_id
+GROUP BY 
+    l.location_name;
+
+
+Return Quantity and Profit per Author:
+SELECT 
+    a.author_name,
+    SUM(f.quantity) AS total_quantity,
+    SUM(f.profit) AS total_profit
+FROM 
+    BooksFact f
+JOIN 
+    AuthorDim a ON f.author_id = a.author_id
+GROUP BY 
+    a.author_name;
+
+
+
+Return Quantity and Profit per Publication
+SELECT 
+    p.publication_name,
+    SUM(f.quantity) AS total_quantity,
+    SUM(f.profit) AS total_profit
+FROM 
+    BooksFact f
+JOIN 
+    PublicationDim p ON f.publication_id = p.publication_id
+GROUP BY 
+    p.publication_name;
+
+
+
