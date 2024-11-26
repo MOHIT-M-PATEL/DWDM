@@ -1,0 +1,3 @@
+Consider a book management operational database that tracks different book types, cost, quantity, profit, location, authors and their age and country, publication name and their country and year. You have to design a data warehouse that will be updated from the above operational database and should support decision-making by helping to answer analytical questions about the quantity and profit made per book type, location, author, and publication.
+1) Draw the star schema(s) showing the main attributes, including primary keys, foreign keys, and facts.
+2) Insert appropriate values in the database. Write SQL statements that runs on your schema and return the quantity and profit made per book type, location, author, and publication.
