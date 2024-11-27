@@ -1,0 +1,69 @@
+CREATE TABLE Dim_Purpose (
+    Purpose_ID INT PRIMARY KEY,
+    Purpose_Description VARCHAR(100)
+);
+
+CREATE TABLE Dim_Payment_Method (
+    Payment_Method_ID INT PRIMARY KEY,
+    Payment_Method_Name VARCHAR(50)
+);
+
+CREATE TABLE Dim_Campaign_Type (
+    Campaign_Type_ID INT PRIMARY KEY,
+    Campaign_Type_Description VARCHAR(100)
+);
+
+CREATE TABLE Dim_Campaign (
+    Campaign_ID INT PRIMARY KEY,
+    Campaign_Name VARCHAR(100),
+    Start_Date DATE,
+    End_Date DATE,
+    Campaign_Type_ID INT,
+    FOREIGN KEY (Campaign_Type_ID) REFERENCES Dim_Campaign_Type(Campaign_Type_ID)
+);
+
+CREATE TABLE Dim_Address (
+    Address_ID INT PRIMARY KEY,
+    City VARCHAR(100),
+    State VARCHAR(100),
+    Country VARCHAR(100)
+);
+
+CREATE TABLE Dim_Department (
+    Department_ID INT PRIMARY KEY,
+    Department_Name VARCHAR(100)
+);
+
+CREATE TABLE Dim_Degree (
+    Degree_ID INT PRIMARY KEY,
+    Degree_Name VARCHAR(100),
+    Department_ID INT,
+    FOREIGN KEY (Department_ID) REFERENCES Dim_Department(Department_ID)
+);
+
+CREATE TABLE Dim_Alumni (
+    Alumni_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Graduation_Year INT,
+    Degree_ID INT,
+    Email VARCHAR(100),
+    Phone VARCHAR(15),
+    Address_ID INT,
+    Employment_Status VARCHAR(50),
+    FOREIGN KEY (Degree_ID) REFERENCES Dim_Degree(Degree_ID),
+    FOREIGN KEY (Address_ID) REFERENCES Dim_Address(Address_ID)
+);
+
+CREATE TABLE Fact_Donations (
+    Donation_ID INT PRIMARY KEY,
+    Alumni_ID INT,
+    Donation_Amount DECIMAL(10, 2),
+    Donation_Date DATE,
+    Campaign_ID INT,
+    Payment_Method_ID INT,
+    Purpose_ID INT,
+    FOREIGN KEY (Alumni_ID) REFERENCES Dim_Alumni(Alumni_ID),
+    FOREIGN KEY (Campaign_ID) REFERENCES Dim_Campaign(Campaign_ID),
+    FOREIGN KEY (Payment_Method_ID) REFERENCES Dim_Payment_Method(Payment_Method_ID),
+    FOREIGN KEY (Purpose_ID) REFERENCES Dim_Purpose(Purpose_ID)
+);
